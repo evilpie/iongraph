@@ -233,22 +233,6 @@ def outputPass(fnum, pnum, irname, g):
     g.write(f)
     f.close()
 
-# Add in closing } and ] braces to close a JSON file in case of error.
-def parenthesize(s):
-    stack = []
-    for c in s:
-        if   c == '{' or c == '[':
-            stack.append(c)
-        elif c == '}' or c == ']':
-            stack.pop()
-    
-    while stack:
-        c = stack.pop()
-        if   c == '{': s += '}'
-        elif c == '[': s += ']'
-
-    return s
-
 def dieWithUsage():
     sys.stderr.write(" Usage: " + sys.argv[0] + " [--final] [--funcnum N] <JSON file>\n")
     sys.exit(1)
@@ -296,7 +280,7 @@ def main():
     s = f.read()
     f.close()
 
-    ion = json.loads(parenthesize(s))
+    ion = json.loads(s)
 
     for i in range(0, len(ion['functions'])):
         func = ion['functions'][i]
